@@ -1,52 +1,87 @@
-# 📄 ATS Resume Builder — Gerador de Currículo Otimizado para ATS com Exportação A4
+# ATS Resume Builder: Semantic Density Scoring and High-Fidelity Print CSS Layout
 
-Gerador de currículos profissionais com **analisador de pontuação de compatibilidade com sistemas ATS (Applicant Tracking Systems)**, análise de densidade de palavras-chave e renderização CSS de alta precisão para impressão A4 e exportação em PDF.
-
----
-
-## 📌 Que Problema Resolve?
-
-Mais de 75% dos currículos enviados para grandes empresas são descartados automaticamente por robôs de triagem (ATS) antes de qualquer recrutador humano lê-los. Os motivos mais comuns incluem:
-- Formatação em colunas duplas complexas que quebram parsers de texto.
-- Ausência de palavras-chave semânticas relevantes para a vaga.
-- Seções despadronizadas ou fontes não reconhecidas.
-
-O **ATS Resume Builder** resolve esse problema garantindo uma estrutura de HTML/CSS semântica que é 100% interpretável por parsers automatizados e calcula uma nota de aderência em tempo real.
+**Author:** Henri Mafra  
+**License:** MIT License  
+**Domain:** Natural Language Processing, Document Layout Engineering, Information Extraction  
 
 ---
 
-## ⚙️ Diferencial Técnico
+## 1. Overview
 
-1. **Scoring de Aderência ATS (0-100):** Analisa presença de verbos de ação, métricas quantificáveis de resultado (ex: %, R$), seções obrigatórias e densidade de competências técnicas.
-2. **Layout para Impressão CSS A4:** Regras de `@media print` milimetricamente calibradas para gerar PDFs sem cortes estranhos de linhas ou quebra de blocos.
-3. **Privacidade First:** Armazenamento local e seguro, sem compartilhamento de dados pessoais.
+ATS Resume Builder is an engineering solution designed to eliminate programmatic parsing failures in automated **Applicant Tracking Systems (ATS)**. The platform features an algorithmic keyword salience and semantic density scoring engine, alongside a calibrated CSS Paged Media layout engine for deterministic, high-fidelity A4 document rendering.
 
 ---
 
-## 🏗️ Stack Tecnológica
+## 2. Problem Formulation and Parsing Bottlenecks
 
-- **Frontend:** React 18, TypeScript, Tailwind CSS, Lucide Icons.
-- **Backend Edge:** Cloudflare Pages Functions.
-- **Storage:** Cloudflare D1 (SQLite).
+Industrial ATS parsers (e.g., Sovren, Taleo, Workday) process resumes via linear text extractors and named entity recognition models. The following structural elements frequently trigger parse-tree collapse:
+1. Multi-column floating divisions causing horizontal text interleaving.
+2. Rasterized typography or icon fonts lacking semantic Unicode representations.
+3. Irregular section headers failing standard taxonomy classifiers.
 
 ---
 
-## 🚀 Como Executar Localmente
+## 3. Algorithmic Formulation of ATS Scoring
+
+The scoring engine evaluates the candidate document vector across four orthogonal dimensions:
+
+$$Score = w_1 S_{\text{sec}} + w_2 S_{\text{act}} + w_3 S_{\text{quant}} + w_4 S_{\text{dens}}$$
+
+Where:
+- $S_{\text{sec}} \in [0, 1]$: Presence of canonical taxonomy sections (Experience, Education, Skills, Certifications).
+- $S_{\text{act}} \in [0, 1]$: Frequency of high-impact action verbs (e.g., *Architected, Engineered, Implemented*).
+- $S_{\text{quant}} \in [0, 1]$: Quantified business metrics (percentages, monetary gains, latency reductions).
+- $S_{\text{dens}} \in [0, 1]$: Normalized keyword frequency relative to domain technical vocabularies.
+- Weights: $w = (0.25, 0.25, 0.25, 0.25)$.
+
+---
+
+## 4. Precision Print Engine
+
+The layout engine implements W3C Paged Media module specifications:
+
+```css
+@page {
+  size: A4 portrait;
+  margin: 15mm 15mm 15mm 15mm;
+}
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page-break-avoid {
+    break-inside: avoid;
+  }
+}
+```
+
+---
+
+## 5. Setup and Execution
 
 ```bash
-# 1. Clone o repositório
+# 1. Clone repository
 git clone https://github.com/HenriMafra/ats-resume-builder.git
 cd ats-resume-builder
 
-# 2. Instale as dependências
+# 2. Install dependencies
 npm install
 
-# 3. Inicie o servidor
+# 3. Start development server
 npm run dev
 ```
 
 ---
 
-## 📄 Licença
+## 6. References
 
-Distribuído sob a licença **MIT**. Desenvolvido por **Henri Mafra**.
+- W3C. (2018). *CSS Paged Media Module Level 3*. W3C Candidate Recommendation.
+- Jurafsky, D., & Martin, J. H. (2023). *Speech and Language Processing* (3rd ed. draft). Pearson.
+
+---
+
+## 7. License
+
+Licensed under the MIT License. Copyright (c) Henri Mafra.
