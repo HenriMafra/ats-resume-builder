@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5aa2ff" />
+      <stop offset="1" stop-color="#22d3ee" />
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="52" height="52" rx="12" fill="#0b0f1a" stroke="url(#g)" stroke-width="3" />
+  <!-- Folha de currículo -->
+  <path d="M22 16h13l9 9v23a2 2 0 0 1-2 2H22a2 2 0 0 1-2-2V18a2 2 0 0 1 2-2z" fill="#0f1422" stroke="url(#g)" stroke-width="2.5" stroke-linejoin="round" />
+  <path d="M35 16v9h9" fill="none" stroke="url(#g)" stroke-width="2.5" stroke-linejoin="round" />
+  <g stroke="url(#g)" stroke-width="2.5" stroke-linecap="round">
+    <path d="M26 32h12" />
+    <path d="M26 38h12" />
+    <path d="M26 44h7" />
+  </g>
+</svg>

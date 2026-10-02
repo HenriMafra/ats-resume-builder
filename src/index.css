@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  /* Cor de acento do currículo (sobrescrita em runtime pelo seletor). */
+  --cv-accent: #5aa2ff;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink-950 text-slate-200 antialiased;
+  background-image: radial-gradient(
+      1200px 600px at 70% -10%,
+      rgba(47, 123, 255, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(900px 500px at 0% 0%, rgba(34, 211, 238, 0.08), transparent 55%);
+  background-attachment: fixed;
+}
+
+/* Thin custom scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #283149 transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #283149;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #3a4663;
+  background-clip: content-box;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-white/5 bg-ink-850/70 backdrop-blur-sm shadow-card;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-300;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn bg-brand-500 text-white hover:bg-brand-600 shadow-glow;
+  }
+  .btn-ghost {
+    @apply btn border border-white/10 bg-white/5 text-slate-200 hover:bg-white/10;
+  }
+  .label {
+    @apply text-[11px] font-semibold uppercase tracking-wider text-slate-500;
+  }
+  /* Campos de formulário padronizados */
+  .field {
+    @apply w-full rounded-lg border border-white/10 bg-ink-900/60 px-3 py-2 text-sm text-slate-100 outline-none transition placeholder:text-slate-600 focus:border-brand-400/60 focus:ring-2 focus:ring-brand-500/20;
+  }
+  .field-invalid {
+    @apply border-rose-500/60 focus:border-rose-500/60 focus:ring-rose-500/20;
+  }
+}
+
+/* Respeita prefers-reduced-motion: atenua animações/transições (CSS e
+   framer-motion via inline transition) sem desligar a interface. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Subtle skeleton shimmer */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06),
+    transparent
+  );
+  animation: shimmer 1.6s infinite;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Folha A4 — preview ao vivo
+   210mm × 297mm. No preview usamos px na proporção exata (794 × 1123 @ 96dpi)
+   e aplicamos zoom via transform: scale(). Na impressão, a folha vira o
+   próprio papel (ver @media print mais abaixo).
+   ────────────────────────────────────────────────────────────────────────── */
+.cv-page {
+  width: 794px;
+  min-height: 1123px;
+  background: #ffffff;
+  color: #1f2937;
+  box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.55), 0 2px 8px -2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  font-family: Inter, system-ui, "Segoe UI", Roboto, sans-serif;
+  /* Imprime as cores de fundo dos modelos coloridos. */
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Tamanhos de fonte do conteúdo (S / M / L) */
+.cv-font-s {
+  font-size: 13px;
+  line-height: 1.45;
+}
+.cv-font-m {
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.cv-font-l {
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+/* Indicador visual de quebra de página: linha tracejada a cada altura de folha. */
+.cv-page-break-guide {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 2px dashed rgba(244, 63, 94, 0.55);
+  pointer-events: none;
+  z-index: 5;
+}
+.cv-page-break-guide::after {
+  content: "Quebra de página";
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #e11d48;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: Inter, sans-serif;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Impressão / Exportação em PDF
+   Imprime SOMENTE a folha A4 (#cv-print-root), com margens de papel A4.
+   ────────────────────────────────────────────────────────────────────────── */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Esconde tudo, exibe apenas a árvore de impressão. */
+  body * {
+    visibility: hidden !important;
+  }
+  #cv-print-root,
+  #cv-print-root * {
+    visibility: visible !important;
+  }
+
+  #cv-print-root {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* A folha ocupa exatamente a página, sem sombra nem zoom de tela. */
+  #cv-print-root .cv-page {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    box-shadow: none !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  /* Guias de quebra de página são auxiliares de tela — nunca imprimem. */
+  .cv-page-break-guide,
+  .no-print {
+    display: none !important;
+  }
+}

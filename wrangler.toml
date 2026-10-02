@@ -1,0 +1,10 @@
+name = "curriculoforge"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "dist"
+
+# ── Cloudflare D1 (database) ──────────────────────────────────────────────────
+# Crie com `npm run db:create`, depois cole o database_id retornado abaixo.
+[[d1_databases]]
+binding = "DB"
+database_name = "curriculoforge-db"
+database_id = "eaae8134-7a37-45b5-834c-4d0f392dcf0a"
